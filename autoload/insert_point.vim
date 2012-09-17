@@ -12,6 +12,7 @@ function! insert_point#get_next_pos()
     if empty(cur)
       continue
     endif
+
     if !exists('pos') || cur[0] < pos[0] || (cur[0] == pos[0] && cur[1] < pos[1])
       let pos = cur
     endif
@@ -31,6 +32,7 @@ function! insert_point#get_prev_pos()
     if empty(cur)
       continue
     endif
+
     if !exists('pos') || cur[0] > pos[0] || (cur[0] == pos[0] && cur[1] > pos[1])
       let pos = cur
     endif
