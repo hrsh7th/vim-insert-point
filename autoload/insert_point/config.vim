@@ -1,10 +1,18 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+let g:insert_point_config = get(
+      \ g:,
+      \ 'insert_point_config',
+      \ { 'default': insert_point#config#default#get() })
+
 function! insert_point#config#get(filetype)
-  let config = insert_point#config#default#get()
+  let config = get(g:insert_point_config, 'default', insert_point#config#default#get())
   try
-    let config = function('insert_point#config#' . a:filetype . '#get')()
+    let config = get(
+          \ g:insert_point_config,
+          \ a:filetype,
+          \ function('insert_point#config#' . a:filetype . '#get')())
   catch
   endtry
   return map(config, "{
