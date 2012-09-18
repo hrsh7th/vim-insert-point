@@ -42,7 +42,7 @@ function! insert_point#get_prev_pos()
 endfunction
 
 function! insert_point#search_next(pattern, ...)
-  let pos = searchpos(a:pattern, 'nW')
+  let pos = searchpos(a:pattern, 'nW', line('w$'))
   let cur = insert_point#get_current_pos()
   if insert_point#compare_pos(cur, pos)
     return [pos[0], pos[1] + (a:0 == 1 ? a:1 : 0)]
@@ -51,7 +51,7 @@ function! insert_point#search_next(pattern, ...)
 endfunction
 
 function! insert_point#search_prev(pattern, ...)
-  let pos = searchpos(a:pattern, 'nbW')
+  let pos = searchpos(a:pattern, 'nbW', line('w0'))
   let cur = insert_point#get_current_pos()
   if !insert_point#compare_pos(cur, pos)
     return [pos[0], pos[1] + (a:0 == 1 ? a:1 : 0)]
@@ -60,12 +60,12 @@ function! insert_point#search_prev(pattern, ...)
 endfunction
 
 function! insert_point#compare_pos(pos1, pos2)
-  return a:pos1[0] < a:pos2[0] || (a:pos1[0] == a:pos2[0] && a:pos1[1] <= a:pos2[1])
+  return a:pos1[0] < a:pos2[0] || (a:pos1[0] == a:pos2[0] && a:pos1[1] < a:pos2[1])
 endfunction
 
 function! insert_point#get_current_pos()
   let cur = getpos('.')[1:2]
-  return [cur[0], cur[1] + 1]
+  return [cur[0], cur[1]]
 endfunction
 
 let &cpo = s:save_cpo

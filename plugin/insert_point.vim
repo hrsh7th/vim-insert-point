@@ -6,8 +6,8 @@ let g:loaded_insert_point = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-inoremap <silent> <Plug>(insert_point_next_point) <ESC>:<C-u>call <SID>next_point()<CR>i
-inoremap <silent> <Plug>(insert_point_prev_point) <ESC>:<C-u>call <SID>prev_point()<CR>i
+inoremap <silent> <Plug>(insert_point_next_point) <ESC>:<C-u>call <SID>next_point()<CR>a
+inoremap <silent> <Plug>(insert_point_prev_point) <ESC>:<C-u>call <SID>prev_point()<CR>a
 
 function! s:next_point()
   let pos = insert_point#get_next_pos()
