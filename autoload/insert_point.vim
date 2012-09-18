@@ -13,12 +13,12 @@ function! insert_point#get_next_pos()
       continue
     endif
 
-    if !exists('pos') || cur[0] < pos[0] || (cur[0] == pos[0] && cur[1] < pos[1])
+    if !exists('pos') || insert_point#compare_pos(cur, pos)
       let pos = cur
     endif
   endfor
 
-  return exists('pos') ? pos : getpos('.')[1:2]
+  return exists('pos') ? pos : insert_point#get_current_pos()
 endfunction
 
 function! insert_point#get_prev_pos()
@@ -33,28 +33,18 @@ function! insert_point#get_prev_pos()
       continue
     endif
 
-    if !exists('pos') || cur[0] > pos[0] || (cur[0] == pos[0] && cur[1] > pos[1])
+    if !exists('pos') || !insert_point#compare_pos(cur, pos)
       let pos = cur
     endif
   endfor
 
-  return exists('pos') ? pos : getpos('.')[1:2]
-endfunction
-
-function! insert_point#get_next_char(...)
-  let offset = (a:0 > 0 ? a:1 : 0) - 1
-  return getline('.')[col('.') + offset]
-endfunction
-
-function! insert_point#get_prev_char(...)
-  let offset = (a:0 > 0 ? -a:1 : 0) - 2
-  return getline('.')[col('.') + offset]
+  return exists('pos') ? pos : insert_point#get_current_pos()
 endfunction
 
 function! insert_point#search_next(pattern, ...)
   let pos = searchpos(a:pattern, 'nW')
-  let cur = getpos('.')[1:2]
-  if pos[0] > cur[0] || (pos[0] == cur[0] && pos[1] > cur[1])
+  let cur = insert_point#get_current_pos()
+  if insert_point#compare_pos(cur, pos)
     return [pos[0], pos[1] + (a:0 == 1 ? a:1 : 0)]
   endif
   return []
@@ -62,11 +52,20 @@ endfunction
 
 function! insert_point#search_prev(pattern, ...)
   let pos = searchpos(a:pattern, 'nbW')
-  let cur = getpos('.')[1:2]
-  if pos[0] < cur[0] || (pos[0] == cur[0] && pos[1] < cur[1])
+  let cur = insert_point#get_current_pos()
+  if !insert_point#compare_pos(cur, pos)
     return [pos[0], pos[1] + (a:0 == 1 ? a:1 : 0)]
   endif
   return []
+endfunction
+
+function! insert_point#compare_pos(pos1, pos2)
+  return a:pos1[0] < a:pos2[0] || (a:pos1[0] == a:pos2[0] && a:pos1[1] <= a:pos2[1])
+endfunction
+
+function! insert_point#get_current_pos()
+  let cur = getpos('.')[1:2]
+  return [cur[0], cur[1] + 1]
 endfunction
 
 let &cpo = s:save_cpo
