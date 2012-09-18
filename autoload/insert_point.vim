@@ -59,6 +59,26 @@ function! insert_point#search_prev(pattern, ...)
   return []
 endfunction
 
+function! insert_point#detect_key(pos)
+  let pos = a:pos
+  let key = 'a'
+  if pos[1] < 1
+    let key = 'i'
+  endif
+  return key
+endfunction
+
+function! insert_point#fix_pos(pos)
+  let pos = a:pos
+  let len = strlen(getline(pos[0]))
+  if pos[1] < 1
+    let pos[1] = 1
+  elseif pos[1] > len
+    let pos[1] = len
+  endif
+  return pos
+endfunction
+
 function! insert_point#compare_pos(pos1, pos2)
   return a:pos1[0] < a:pos2[0] || (a:pos1[0] == a:pos2[0] && a:pos1[1] < a:pos2[1])
 endfunction
