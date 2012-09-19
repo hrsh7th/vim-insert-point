@@ -6,18 +6,18 @@ function! insert_point#config#default#get()
   " next and prev.
   call add(config, {
         \ 'target': '$',
-        \ 'offset': -1,
-        \ 'direction': 0 })
-  call add(config, {
-        \ 'target': '.)',
         \ 'offset': 0,
         \ 'direction': 0 })
   call add(config, {
-        \ 'target': '.]',
+        \ 'target': ')',
         \ 'offset': 0,
         \ 'direction': 0 })
   call add(config, {
-        \ 'target': '.}',
+        \ 'target': ']',
+        \ 'offset': 0,
+        \ 'direction': 0 })
+  call add(config, {
+        \ 'target': '}',
         \ 'offset': 0,
         \ 'direction': 0 })
   call add(config, {
@@ -32,16 +32,16 @@ function! insert_point#config#default#get()
   " next only.
   call add(config, {
         \ 'target': ')',
-        \ 'offset': 0,
-        \ 'direction': 1 })
+        \ 'offset': 1,
+        \ 'direction': 0 })
   call add(config, {
         \ 'target': ']',
-        \ 'offset': 0,
-        \ 'direction': 1 })
+        \ 'offset': 1,
+        \ 'direction': 0 })
   call add(config, {
         \ 'target': '}',
-        \ 'offset': 0,
-        \ 'direction': 1 })
+        \ 'offset': 1,
+        \ 'direction': 0 })
   return config
 endfunction
 
