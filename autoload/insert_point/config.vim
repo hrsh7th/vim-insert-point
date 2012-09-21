@@ -1,19 +1,22 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:insert_point_config = get(
-      \ g:,
-      \ 'insert_point_config',
+let g:insert_point_config = get(g:, 'insert_point_config',
       \ { 'default': insert_point#config#default#get() })
 
+let g:insert_point_same_filetype_map = {
+      \ 'smarty': 'html' }
+
 function! insert_point#config#get(filetype)
+  echomsg a:filetype
   let config = get(g:insert_point_config, 'default', insert_point#config#default#get())
   try
-    let config = get(
-          \ g:insert_point_config,
-          \ a:filetype,
+    let config = get(g:insert_point_config,a:filetype,
           \ function('insert_point#config#' . a:filetype . '#get')())
   catch
+    if exists('g:insert_point_same_filetype_map[a:filetype]')
+      return insert_point#config#get(g:insert_point_same_filetype_map[a:filetype])
+    endif
   endtry
   return config
 endfunction

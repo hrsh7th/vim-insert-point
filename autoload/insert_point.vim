@@ -2,7 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! insert_point#get_next_item()
-  let config = insert_point#config#get(getbufvar('%', '&filetype'))
+  let config = insert_point#config#get(insert_point#get_filetype())
   for value in config
     if !insert_point#config#is_next(value)
       continue
@@ -19,7 +19,7 @@ function! insert_point#get_next_item()
 endfunction
 
 function! insert_point#get_prev_item()
-  let config = insert_point#config#get(getbufvar('%', '&filetype'))
+  let config = insert_point#config#get(insert_point#get_filetype())
   for value in config
     if !insert_point#config#is_prev(value)
       continue
@@ -107,6 +107,10 @@ function! insert_point#fix_pos(pos)
     let pos[1] = len + 1
   endif
   return pos
+endfunction
+
+function! insert_point#get_filetype()
+  return exists('g:loaded_neocomplcache') ? neocomplcache#get_context_filetype() : getbufvar('%', '&filetype')
 endfunction
 
 function! insert_point#get_select_length(item)
