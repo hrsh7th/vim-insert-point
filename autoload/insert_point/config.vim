@@ -15,19 +15,22 @@ function! insert_point#config#get(filetype)
           \ function('insert_point#config#' . a:filetype . '#get')())
   catch
   endtry
-  return map(config, "{
-        \ 'target': v:val.target,
-        \ 'offset': v:val.offset,
-        \ 'direction': exists('v:val.direction') ? v:val.direction : 0
-        \ }")
+  return config
 endfunction
 
-function! insert_point#config#is_next(direction)
-  return a:direction == 0 || a:direction == 1
+function! insert_point#config#is_select(item)
+  let select = exists('a:item.select') ? a:item.select : ''
+  return strlen(select) > 0
 endfunction
 
-function! insert_point#config#is_prev(direction)
-  return a:direction == 0 || a:direction == -1
+function! insert_point#config#is_next(item)
+  let direction = exists('a:item.direction') ? a:item.direction : 0
+  return direction == 0 || direction == 1
+endfunction
+
+function! insert_point#config#is_prev(item)
+  let direction = exists('a:item.direction') ? a:item.direction : 0
+  return direction == 0 || direction == -1
 endfunction
 
 let &cpo = s:save_cpo

@@ -3,7 +3,6 @@ set cpo&vim
 
 function! insert_point#config#default#get()
   let config = []
-  " next and prev.
   call add(config, {
         \ 'target': '$',
         \ 'offset': 0,
@@ -21,15 +20,15 @@ function! insert_point#config#default#get()
         \ 'offset': 0,
         \ 'direction': 0 })
   call add(config, {
-        \ 'target': "'",
-        \ 'offset': 0,
+        \ 'target': "'". '\(\\'. "'". '\|[^'. "'". ']\)\{-}'. "'",
+        \ 'select': '\(\\'. "'". '\|[^'. "'". ']\)*',
+        \ 'offset': 1,
         \ 'direction': 0 })
   call add(config, {
-        \ 'target': '"',
-        \ 'offset': 0,
+        \ 'target': '"\(\\"\|[^"]\)\{-}"',
+        \ 'select': '\(\\"\|[^"]\)*',
+        \ 'offset': 1,
         \ 'direction': 0 })
-
-  " next only.
   call add(config, {
         \ 'target': ')',
         \ 'offset': 1,
